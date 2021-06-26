@@ -3,21 +3,21 @@ import secrets
 import string
 
 
-def pruefGrosBuchstaben(grosbuchstaben,laenge):
+def pruefGrossBuchstaben(grossbuchstaben,laenge):
 
-    while int(grosbuchstaben) > laenge:
-            grosbuchstaben = input("Die Anzahl der Großbuchstaben muss kürzer als die Länge sein"
-                                       ", bitte geben Sie nochmals die Anzahl der Großbuchstaben ein, wenn Sie aus dem programm raus gehen wollen schreiben Sie off")
-            if not grosbuchstaben.isnumeric() :
+    while int(grossbuchstaben) > laenge:
+            grossbuchstaben = input("Die Anzahl der Großbuchstaben muss kürzer als die Länge sein"
+                                       ", bitte geben Sie nochmals die Anzahl der Großbuchstaben ein, wenn Sie aus dem Programm rausgehen wollen, schreiben Sie 'off'")
+            if not grossbuchstaben.isnumeric() :
                 return 0
-            elif int(grosbuchstaben) < laenge:
-                return grosbuchstaben
-    return grosbuchstaben
+            elif int(grossbuchstaben) < laenge:
+                return grossbuchstaben
+    return grossbuchstaben
 def pruefKleinBuchstaben(kleinbuchstaben,laenge,grosbuchstaben):
 
         while int(kleinbuchstaben) > laenge or (int(grosbuchstaben) + int(kleinbuchstaben)) > laenge:
             kleinbuchstaben = input("Die Anzahl der Kleinbuchstaben muss kürzer als die Länge sein"
-                                        ", bitte geben Sie nochmals die Anzahl der Kleinbuchstaben ein, wenn Sie aus dem Programm raus gehen wollen schreiben sie off")
+                                        ", bitte geben Sie nochmals die Anzahl der Kleinbuchstaben ein, wenn Sie aus dem Programm rausgehen wollen, schreiben sie 'off'")
             if not kleinbuchstaben.isnumeric():
                 break
             elif int(kleinbuchstaben)<laenge:
@@ -27,7 +27,7 @@ def pruefKleinBuchstaben(kleinbuchstaben,laenge,grosbuchstaben):
 def pruefSonderZeichen(sonderzeichen,laenge,grosbuchstaben,kleinbuchstaben):
         while int(sonderzeichen) > laenge or (int(grosbuchstaben) + int(kleinbuchstaben) + int(sonderzeichen)) > laenge:
             sonderzeichen = input("Die Anzahl der Sonderzeichen muss kürzer als die Länge sein"
-                                      ", bitte geben Sie nochmals die Anzahl der Sonderzeichen ein,wenn Sie aus dem Programm raus gehen wollen schreiben sie off")
+                                      ", bitte geben Sie nochmals die Anzahl der Sonderzeichen ein,wenn Sie aus dem Programm rausgehen wollen, schreiben sie off")
             if not sonderzeichen.isnumeric():
                 break
             elif int(sonderzeichen)<laenge:
@@ -43,20 +43,20 @@ def passGenerieren():
     pw = ""
 
     laenge = int(input("Bitte geben Sie die Länge des Passwortes ein: "))
-    grosbuchstaben = int(input("Bitte geben Sie die Anzahl der Großbuchstaben ein: "))
-    grosbuchstaben=int(pruefGrosBuchstaben(grosbuchstaben,laenge))
-    pw = pw + (''.join(secrets.choice(buchstabenGroß) for _ in range (grosbuchstaben)))
+    grossbuchstaben = int(input("Bitte geben Sie die Anzahl der Großbuchstaben ein: "))
+    grossbuchstaben=int(pruefGrossBuchstaben(grossbuchstaben,laenge))
+    pw = pw + (''.join(secrets.choice(buchstabenGroß) for _ in range (grossbuchstaben)))
     kleinbuchstaben = int(input("Bitte geben Sie die Anzahl der Kleinbuchstaben ein: "))
-    kleinbuchstaben=int(pruefKleinBuchstaben(kleinbuchstaben,laenge,grosbuchstaben))
+    kleinbuchstaben=int(pruefKleinBuchstaben(kleinbuchstaben,laenge,grossbuchstaben))
 
     pw = pw + (''.join(secrets.choice(buchstabenKlein) for _ in range (kleinbuchstaben)))
     sonderzeichen = int(input("Bitte geben Sie die Anzahl der Sonderzeichen ein: "))
-    sonderzeichen=int(pruefSonderZeichen(sonderzeichen,laenge,grosbuchstaben,kleinbuchstaben))
+    sonderzeichen=int(pruefSonderZeichen(sonderzeichen,laenge,grossbuchstaben,kleinbuchstaben))
     pw = pw + (''.join(secrets.choice(zeichen) for _ in range (sonderzeichen)))
     #file.txt
 
     digit=string.digits
-    pw = pw + (''.join(secrets.choice(digit) for _ in range(laenge-(grosbuchstaben+kleinbuchstaben+sonderzeichen))))
+    pw = pw + (''.join(secrets.choice(digit) for _ in range(laenge-(grossbuchstaben+kleinbuchstaben+sonderzeichen))))
 
     print(pw)
 
@@ -115,7 +115,7 @@ if möglichkeit == 1:
   print("")
 elif möglichkeit == 2:
 
-    frage=input("Möchten Sie ein neues Passwort generieren lassen oder Ihr eingenes eingeben? [g/e]")
+    frage=input("Möchten Sie ein neues Passwort generieren lassen oder Ihr eigenes eingeben? Drücken sie 'g' für generieren lassen und 'e', für Ihr eigenes")
     if frage == "g":
         passGenerieren()
     elif frage =="e":
