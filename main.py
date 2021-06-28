@@ -33,7 +33,9 @@ def checkIfMasterIsneeded():
             # damit durch die falsche Eingabe das Programm geschlossen wird, benutzen wir hier
             # sys.exit(0)
 
-
+# um das Passwort in der Zwischenablage kopieren zu können, benutzen wir pyperclip
+# dafür mussten wir pyperclip importieren, sowie im Terminal: pip install pyperclip angeben
+# das Passwort bleibt für 30Sek in der Zwischenablage, danach wird es geleert
 def startDeleteTimer():
     def deletePassword():
         time.sleep(30)
@@ -48,18 +50,21 @@ def readPasswords():
     try:
         file = open('password.txt', 'r')
         lines = file.readlines()
+        # wir lesen die file hier
 
         for index, line in enumerate(lines):
             userdata = line.split(';')
             websites.append(userdata[0].split(" ")[2])
             usernames.append(userdata[1].split(" ")[2])
             passwords.append(userdata[2].split(" ")[2].replace('\n', ''))
-
+        # damit die Information in der File geordnet bleibt, haben wir es strukturiert
         file.close()
     except:
         #Datei existiert nicht, vllt erster start
         pass;
-
+# dient zur Speicherung der Daten von der Benutezreingabe
+# 'a' beim File = daten hinzufügen
+# hier geht es um das Speichern des generierten Passwortes
 def rewriteFile():
     os.remove('password.txt')
     outfile = open('password.txt', 'a')
@@ -67,13 +72,16 @@ def rewriteFile():
         outfile.write(f" Webseite: {websites[i]} ; Benutzername: {usernames[i]} ; Passwort: {str(passwords[i])}\n")
     readPasswords()
 
-
+# dient zur Speicherung der Daten von der Benutezreingabe
+# 'a' beim File = daten hinzufügen
+# hier geht es um das Speichern des generierten Passwortes
 def fe(ws, bn, eigenes_passwort):
     outfile = open('password.txt', 'a')
     outfile.write(f" Webseite: {ws} ; Benutzername: {bn} ; Passwort: {str(eigenes_passwort)}\n")
     readPasswords()
 
-
+#falls die Länge länger ist, als die Anzahl der summierten Groß- und Kleinbuchstaben, sowie Sondrzeichen
+#wenn es nicht übereinstimmt, wird der Benutzer gefordert es nochmal neu anzugeben
 def pruefGrosBuchstaben(grosbuchstaben, laenge):
     while int(grosbuchstaben) > laenge:
         grosbuchstaben = input("Die Anzahl der Großbuchstaben muss kürzer als die Länge sein"
@@ -84,7 +92,8 @@ def pruefGrosBuchstaben(grosbuchstaben, laenge):
             return grosbuchstaben
     return grosbuchstaben
 
-
+#falls die Länge länger ist, als die Anzahl der summierten Groß- und Kleinbuchstaben, sowie Sondrzeichen
+#wenn es nicht übereinstimmt, wird der Benutzer gefordert es nochmal neu anzugeben
 def pruefKleinBuchstaben(kleinbuchstaben, laenge, grosbuchstaben):
     while int(kleinbuchstaben) > laenge or (int(grosbuchstaben) + int(kleinbuchstaben)) > laenge:
         kleinbuchstaben = input("Die Anzahl der Kleinbuchstaben muss kürzer als die Länge sein"
@@ -95,7 +104,8 @@ def pruefKleinBuchstaben(kleinbuchstaben, laenge, grosbuchstaben):
             return kleinbuchstaben
     return kleinbuchstaben
 
-
+#falls die Länge länger ist, als die Anzahl der summierten Groß- und Kleinbuchstaben, sowie Sondrzeichen
+#wenn es nicht übereinstimmt, wird der Benutzer gefordert es nochmal neu anzugeben
 def pruefSonderZeichen(sonderzeichen, laenge, grosbuchstaben, kleinbuchstaben):
     while int(sonderzeichen) > laenge or (int(grosbuchstaben) + int(kleinbuchstaben) + int(sonderzeichen)) > laenge:
         sonderzeichen = input("Die Anzahl der Sonderzeichen muss kürzer als die Länge sein"
@@ -106,7 +116,8 @@ def pruefSonderZeichen(sonderzeichen, laenge, grosbuchstaben, kleinbuchstaben):
             return sonderzeichen
     return sonderzeichen
 
-
+#hier wird das Passwort generiert
+#dazu haben wir die Groß- und Kleinbuchstaben, sowie Sonderzeichen
 def passGenerieren():
     buchstabenGross = string.ascii_uppercase
 
@@ -114,7 +125,9 @@ def passGenerieren():
 
     zeichen = "^!§$%&/()=?``'_:;“¬”#£ﬁ^^˜\·˜¯˙˚’—÷˛,.-#+<>≥¯˛÷—’˚≠˙¯·˜˜\^^£#”¬“¿'≠}{|][¢¶“¡±‘–…∞µ"
     pw = ""
-
+    # Hier muss der Benutzer eingeben, wie viele Groß-und Kleinbuchstaben, sowie Sonderzeichen er haben möchte
+    # Programmt wählt durch die Funktion secrets.choice zufällige Zeichen aus
+    # und es wird zusammengefügt alles
     laenge = int(input("Bitte geben Sie die Länge des Passwortes ein: "))
     grosbuchstaben = int(input("Bitte geben Sie die Anzahl der Großbuchstaben ein: "))
     grosbuchstaben = int(pruefGrosBuchstaben(grosbuchstaben, laenge))
@@ -133,7 +146,7 @@ def passGenerieren():
         ''.join(secrets.choice(digit) for _ in range(laenge - (grosbuchstaben + kleinbuchstaben + sonderzeichen))))
 
     print(pw)
-
+    # pyperclip speichert das Passwort in die Zwischenablage ab
     pyperclip.copy(pw)
     print("Dein erstelltes Passwort wurde im Clipboard gespeichert. ")
     return pw
@@ -165,11 +178,15 @@ def autoPassGenerieren():
     print("Dein erstelltes Passwort wurde im Clipboard gespeichert. ")  # VERBESSERN
     return pw
 
-
+# 3, wegen Title, Username & Password
 def main(argv):
     if len(argv) < 3:
         print("Kein Aufruf mit Argumenten")
         print("Willkommen beim Passwort-Manager")
+        # hier wird nach dem Masterpasswort gefragt
+        # kommt eine wiederholte abfrage
+        # Programm vergleicht diese
+        # falls es richtig ist, läuft das Programm
 
         mp = input("Bitte geben Sie ein Masterpasswort für Ihren Passwort Manager ein: ")
         global masterPasswort
@@ -183,13 +200,13 @@ def main(argv):
         if mp == EingabeMp:
             print("Die Eingabe war korrekt." + '\n')
             print("Bitte wählen Sie eines der folgenden Möglichkeiten aus: ")
-
+            # wir erstellten 5 Möglichkeiten für den Benutzer, die er frei wählen kann
             while True:
-                print("Press 1: Anschau Passwörter")
-                print("Press 2: Passwort generieren")
-                print("Press 3: Passwort löschen")
-                print("Press 4: Psswort ändern")
-                print("Press 5: Beenden")
+                print("Auswahl 1: Sichtbarkeit Passwörterr")
+                print("Auswahl 2: Passwort generieren")
+                print("Auswahl 3: Passwort löschen")
+                print("Auswahl 4: Psswort ändern")
+                print("Auswahl 5: Beenden")
                 auswahl = int(input("Ihre gewünschte Auswahl : "))
                 moeglichkeit = auswahl
                 if moeglichkeit == 1:
@@ -197,6 +214,8 @@ def main(argv):
                     with open('password.txt', 'r') as f:
                         f_contents = f.read()
                         print(f_contents + '\n')
+                        # Hier kann der Benutzer sich seine Passwörter anschauen
+                        # dafür wird die File gelesen
 
                 elif moeglichkeit == 2:
                     checkIfMasterIsneeded()
@@ -212,6 +231,11 @@ def main(argv):
                         print("Dein erstelltes Passwort wurde im Clipboard gespeichert. ")
                         fe(ws, bn, eigenes_passwort)
                     startDeleteTimer();
+                    # hier kann der Benutzer ein neues Passwort hinzufügen
+                    # kann sich auswählen, ob das Programm eins für ihn generiert
+                    # oder er selbst eins erstellt
+                    # die Passwörter werden dann in der File datei gespeichert
+
 
                 elif moeglichkeit == 3:
                     checkIfMasterIsneeded()
@@ -232,6 +256,9 @@ def main(argv):
                             print("Eintrag nicht gefunden")
                         else:
                             print("Eintrag geloescht")
+                            # Funktion, um Passwort löschen zu können
+                            # Nutzer soll die Webseite angeben, die gemeinsam mit dem Passwort gelöscht wird
+                            # For schleife erstellt, damit das gesuchte Element an der i-Schleife gelöscht wird
 
                 elif moeglichkeit == 4:
                     checkIfMasterIsneeded()
@@ -249,18 +276,25 @@ def main(argv):
                         passwords[elementAnStelle] = neuesPasswort
                         print("Passwort geandert")
                         rewriteFile()
+                        # Funktion, um Passwort ändern zu können
+                        # Nutzer soll die Webseite angeben, damit man da das Passwort ändern kann
+                        # For schleife erstellt, damit das gesuchte Element an der i-Schleife geändert wird
 
                 elif moeglichkeit == 5:
                     print("Auf Wiedersehen!")
                     exit()
+                    # hier kann der Nutzer das Programm beenden
+
 
 
                 else:
                     print("Sie haben eine ungültige Eingabe getätigt")
+                    # Falls der Nutzer was anders statt den Zahlen 1-5 eingibt
     else:
         # Eingabestrings normieren zum vergleich
         if argv[0].lower() == "add":
             if len(argv) != 6:
+                # 6 Parameter=> damit man sich an add -title moodle -username -generatepassword orientiert
                 print("Parameter Fehlt")
                 print("Bitte folgendes Schema benutzen:")
                 print("password_manager.py Add -title <Title> -username <Username> -generatepassword")
@@ -292,7 +326,7 @@ def main(argv):
                 print("OK password created and copied to clipboard")
 
         if argv[0].lower() == "copy":
-
+            # 3 wegen title, username, generatepassword
             if len(argv) == 3:
                 if argv[1] == "-title":
                     title = argv[2]
