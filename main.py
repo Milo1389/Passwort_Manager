@@ -9,6 +9,8 @@ import pyperclip
 import sys
 import os
 
+import stdiomask
+
 websites = []
 usernames = []
 passwords = []
@@ -188,10 +190,10 @@ def main(argv):
         # Programm vergleicht diese
         # falls es richtig ist, läuft das Programm
 
-        mp = input("Bitte geben Sie ein Masterpasswort für Ihren Passwort Manager ein: ")
+        mp = stdiomask.getpass("Bitte geben Sie ein Masterpasswort für Ihren Passwort Manager ein: ")
         global masterPasswort
         masterPasswort = mp
-        EingabeMp = input("Bitte geben Sie nun Ihr Masterpasswort ein: ")
+        EingabeMp = stdiomask.getpass("Bitte geben Sie nun Ihr Masterpasswort ein: ")
 
         while mp != EingabeMp:
             if mp != EingabeMp:
