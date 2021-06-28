@@ -34,16 +34,24 @@ def startDeleteTimer():
     thread.start()
 
 def readPasswords():
-    file = open('password.txt', 'r')
-    lines = file.readlines()
+    try:
+        file = open('password.txt', 'r')
+        lines = file.readlines()
 
-    for index, line in enumerate(lines):
-        userdata = line.split(';')
-        websites.append(userdata[0].split(" ")[2])
-        usernames.append(userdata[1].split(" ")[2])
-        passwords.append(userdata[2].split(" ")[2].replace('\n',''))
+        for index, line in enumerate(lines):
+            userdata = line.split(';')
+            websites.append(userdata[0].split(" ")[2])
+            usernames.append(userdata[1].split(" ")[2])
+            passwords.append(userdata[2].split(" ")[2].replace('\n', ''))
 
-    file.close()
+    except IOError:
+        print('SpeicherDatei wurde nicht gefunden')
+        print('Es wird eine neue angelegt')
+        file = open("password.txt", "w+")
+
+    finally:
+        file.close()
+
 
 
 def rewriteFile():
@@ -197,7 +205,7 @@ def main(argv):
                         pyperclip.copy(eigenes_passwort)
                         print("Dein erstelltes Passwort wurde im Clipboard gespeichert. ")
                         fe(ws, bn, eigenes_passwort)
-                    startDeleteTimer();
+                    startDeleteTimer()
 
                 elif moeglichkeit == 3:
                     checkIfMasterIsneeded()
