@@ -1,8 +1,0 @@
-# Passworteingabe wird nicht angezeigt
-
-import stdiomask as stdiomask
-
-benutzer = input("Benutzer: ")
-passwort = stdiomask.getpass("Geben Sie ihr Passwort ein: ")
-
-print(passwort)

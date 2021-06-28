@@ -152,7 +152,7 @@ elif möglichkeit == 2:
 
 
     def fe():
-        outfile = open('password.txt', 'a')
+        outfile = open('password', 'a')
         outfile.write(f" Webseite: {ws} ; Benutzername: {bn} ; Passwort:  {str(eigenes_passwort)}")
     fe()
 

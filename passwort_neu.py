@@ -10,8 +10,8 @@ from threading import Timer
 # Damit man auf den Timer zugreifen kann, bin mir nicht sicher ob man es
 # beim Terminal installieren muss also: pip install timer
 
-timeout = 30  # 30 Sekunden timer setzen
-t = Timer(timeout, print, ["Die Zeit ist abgelaufen."])
+timeout = 300  # 300s bzw 5 min  timer setzen
+t = Timer(timeout, print, ["Ihre Sitzung ist abgelaufen. Geben Sie erneut das Masterpasswort ein."])
 
 def pruefGrosBuchstaben(grosbuchstaben, laenge):
     while int(grosbuchstaben) > laenge:
@@ -81,8 +81,8 @@ def passGenerieren():
 
 def lösch_passwort():
     altpasswort = input("Altes Passwort: ")
-    beschtätigung = input("Möchten Sie das Passwort sicherlich löschen? [y/n]")
-    if beschtätigung == "y":
+    bestätigung = input("Möchten Sie das Passwort sicherlich löschen? [y/n]")
+    if bestätigung == "y":
         passwort = ""
         # file.txt
     else:
@@ -110,6 +110,7 @@ print("Willkommen beim Passwort-Manager")
 mp = stdiomask.getpass("Bitte geben Sie ein Masterpasswort für Ihren Passwort Manager ein: ")
 
 EingabeMp = stdiomask.getpass("Bitte geben Sie nun Ihr Masterpasswort ein: ")
+t.start() # timer von 5 min wird gestartet
 
 while mp != EingabeMp:
     if mp != EingabeMp:
@@ -128,7 +129,7 @@ if mp == EingabeMp:
         auswahl = int(input("Ihre gewünschte Auswahl : "))
         möglichkeit = auswahl
         if möglichkeit == 1:
-            with open('password.txt', 'r') as f:
+            with open('password', 'r') as f:
                 f_contents = f.read()
                 print(f_contents + '\n')
         # Bei der ersten Möglichkeit steht dem Benutzer zur Option sich seine Passwörter anzeigen zu lassen
@@ -148,7 +149,7 @@ if mp == EingabeMp:
 
 
                 def fe():
-                    outfile = open('password.txt', 'a')
+                    outfile = open('password', 'a')
                     outfile.write(f" Webseite: {ws} ; Benutzername: {bn} ; Passwort:  {str(eigenes_passwort)}")
 
 
